@@ -23,13 +23,16 @@ def data_in_batches():
 
 	for file in XFileName:
 		img = io.imread(file)
-		resized = skimage.transform.resize(img, (64, 640, 960))
+		resized = img
+		print resized.shape
 		x.insert(0,resized)
 	X= np.asarray(x)
 
+	print("shape: "+str(X.shape))
+
 	for file in YFileName:
 		img = io.imread(file)
-		resized = skimage.transform.resize(img, (64, 640, 960))
+		resized = img
 		y.insert(0,resized)
 	y = np.asarray(y)
 	np.save('X.npy',X)
