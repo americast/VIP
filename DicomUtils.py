@@ -296,7 +296,7 @@ def test_single_patient():
 #test_single_patient()
 #sys.exit(0)
 
-for patient in patients:
+for patient in patients[:3]:
     contours = {}
     print("Patient")
     for subdir, dirs, files in os.walk(patient):
