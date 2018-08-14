@@ -17,38 +17,40 @@ import skimage.transform as trans
 BATCH_SIZE = 10
 
 def data_in_batches():
-	XPath = os.path.join(".","data/train/train")
-	YPath = os.path.join(".","data/train/GT")
+    XPath = os.path.join(".","data/train/train")
+    YPath = os.path.join(".","data/train/GT")
 
-	XFileName = glob.glob(os.path.join(XPath,"*.tiff"))
-	YFileName = glob.glob(os.path.join(YPath,"*.tiff"))
+    XFileName = glob.glob(os.path.join(XPath,"*.tiff"))
+    YFileName = glob.glob(os.path.join(YPath,"*.tiff"))
 
-	x = []
-	y = []
+    x = []
+    y = []
 
-	for file in XFileName:
-		img = io.imread(file)
-		resized = img
-		for slice in resized:
-			x.insert(0,slice)
-		# print resized.shape
-		# x.insert(0,resized)
-	X= np.asarray(x)
+    for file in XFileName:
+        img = io.imread(file)
+        resized = img
+        for slice in resized:
+            x.insert(0,slice)
+        # print resized.shape
+        # x.insert(0,resized)
+    X= np.asarray(x)
+    X = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
+    print("shape: "+str(X.shape))
+    # return
 
-	print("shape: "+str(X.shape))
+    for file in YFileName:
+        img = io.imread(file)
+        resized = img
+        for slice in resized:
+            y.insert(0,slice)
+        # print resized.shape
+        # y.insert(0,resized)
+    y = np.asarray(y)
+    y = np.reshape(y,(y.shape[0],y.shape[1],y.shape[2],1))
 
-	for file in YFileName:
-		img = io.imread(file)
-		resized = img
-		for slice in resized:
-			y.insert(0,slice)
-		# print resized.shape
-		# y.insert(0,resized)
-	y = np.asarray(y)
-
-	print("shape: "+str(y.shape))
-	np.save('X.npy',X)
-	np.save('y.npy',y)
+    print("shape: "+str(y.shape))
+    np.save('X.npy',X)
+    np.save('y.npy',y)
 
 
 
@@ -175,4 +177,4 @@ def saveResult(save_path,npyfile,flag_multi_class = False,num_class = 2):
 
 
 if __name__ == '__main__':
-	data_in_batches()
+    data_in_batches()
