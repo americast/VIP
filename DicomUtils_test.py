@@ -296,7 +296,7 @@ def test_single_patient():
 #test_single_patient()
 #sys.exit(0)
 
-for patient in patients[:100]:
+for patient in patients[:2]:
     contours = {}
     print("Patient")
     for subdir, dirs, files in os.walk(patient):
@@ -307,11 +307,13 @@ for patient in patients[:100]:
         dcms = glob.glob(os.path.join(subdir, "*.dcm"))
         #print dcms
         if len(dcms) == 1:
+            print("File: ",os.path.join(subdir, files[0]))
             structure = dicom.read_file(os.path.join(subdir, files[0]))
             contours = read_structure(structure)
         elif len(dcms) > 1:
             slices = [dicom.read_file(dcm) for dcm in dcms]
     
+    return
     pat_id = slices[0].PatientID        
     print "Patient ID : ",pat_id,
 

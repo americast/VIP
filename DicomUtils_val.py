@@ -12,8 +12,8 @@ import os, sys, glob
 import skimage.io
 
 # Some constants 
-INPUT_FOLDER = 'data/1/'
-OUTPUT_FOLDER = 'data/train/'
+INPUT_FOLDER = 'data_val/1/'
+OUTPUT_FOLDER = 'data_val/train/'
 
 #INPUT_FOLDER = '/usr2/Data/VIP Cup 2018 ICIP/TestData/'
 #OUTPUT_FOLDER = '/usr2/Data/VIP Cup 2018 ICIP/Test/'
@@ -237,11 +237,12 @@ def test_single_patient():
         dcms = glob.glob(os.path.join(subdir, "*.dcm"))
         #print dcms
         if len(dcms) == 1:
+            print("GT path",os.path.join(subdir, files[0]))
             structure = dicom.read_file(os.path.join(subdir, files[0]))
             contours = read_structure(structure)
         elif len(dcms) > 1:
             slices = [dicom.read_file(dcm) for dcm in dcms]
-    
+    return
     pat_id = slices[0].PatientID        
     print "Patient ID : ",pat_id
 
@@ -307,6 +308,8 @@ for patient in patients[:100]:
         dcms = glob.glob(os.path.join(subdir, "*.dcm"))
         #print dcms
         if len(dcms) == 1:
+            # continue
+            print("File: ",os.path.join(subdir, files[0]))
             structure = dicom.read_file(os.path.join(subdir, files[0]))
             contours = read_structure(structure)
         elif len(dcms) > 1:

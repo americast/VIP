@@ -1,4 +1,9 @@
 data/*
+data_test/*
+data_val/*
 *.dcm
-*.npy
+*.npy*
 *.pyc
+*.tiff
+*.hdf5
+

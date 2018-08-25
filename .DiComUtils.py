@@ -4,7 +4,7 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import pydicom as dicom
 import os
 import scipy.ndimage
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from skimage import measure, morphology
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from skimage.draw import polygon
@@ -12,7 +12,7 @@ import os, sys, glob
 import skimage.io
 
 # Some constants 
-INPUT_FOLDER = 'data/1/'
+INPUT_FOLDER = 'data/1/LUNG1-034'
 OUTPUT_FOLDER = 'data/train/'
 
 #INPUT_FOLDER = '/usr2/Data/VIP Cup 2018 ICIP/TestData/'
@@ -216,12 +216,6 @@ def get_mask(contours, slices):
     colors = tuple(np.array([con['color'] for con in contours]) / 255.0)
     return label, colors
 
-# patients = []
-# for lung in os.listdir(INPUT_FOLDER):
-#     for name in os.listdir(os.path.join(INPUT_FOLDER,lung)):
-#         print(name)
-#         pass
-
 
 patients = [os.path.join(INPUT_FOLDER, name) for name in os.listdir(INPUT_FOLDER) if os.path.isdir(os.path.join(INPUT_FOLDER, name))]
 patients.sort()
@@ -296,11 +290,9 @@ def test_single_patient():
 #test_single_patient()
 #sys.exit(0)
 
-for patient in patients[:100]:
+for patient in patients[:5]:
     contours = {}
-    print("Patient")
     for subdir, dirs, files in os.walk(patient):
-        print("Path: ",subdir)
         #print subdir
         #print dirs
         #print files

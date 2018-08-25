@@ -17,8 +17,8 @@ import skimage.transform as trans
 BATCH_SIZE = 10
 
 def data_in_batches():
-    XPath = os.path.join(".","data/train/train")
-    YPath = os.path.join(".","data/train/GT")
+    XPath = os.path.join(".","data_test/train/train")
+    YPath = os.path.join(".","data_test/train/GT")
 
     XFileName = glob.glob(os.path.join(XPath,"*.tiff"))
     YFileName = glob.glob(os.path.join(YPath,"*.tiff"))
@@ -29,7 +29,7 @@ def data_in_batches():
     XFileName.sort()
     YFileName.sort()
 
-    for file in XFileName[:5]:
+    for file in XFileName:
     	print(file)
         img = io.imread(file)
         resized = img
@@ -42,7 +42,7 @@ def data_in_batches():
     # print("shape: "+str(X.shape))
     # return
     print("   ")
-    for file in YFileName[:5]:
+    for file in YFileName:
     	print(file)
         img = io.imread(file)
         resized = img
