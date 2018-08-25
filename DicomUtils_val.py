@@ -168,6 +168,9 @@ def read_structure(structure):
     contours = []
     for i in range(len(structure.ROIContourSequence)):
         for j in range(len(structure.ROIContourSequence[i].ContourSequence)):
+            #print i,structure.ROIContourSequence[i].ContourSequence[j].ContourGeometricType," ",
+            if structure.ROIContourSequence[i].ContourSequence[j].ContourGeometricType == "POINT":
+            	continue
             for k in range(len(structure.ROIContourSequence[i].ContourSequence[j].ContourImageSequence)):
                 contour = {}
                 contour['color'] = structure.ROIContourSequence[i].ROIDisplayColor
