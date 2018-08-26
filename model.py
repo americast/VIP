@@ -8,7 +8,37 @@ from keras.layers import *
 from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
+from keras import backend as K
 
+def switch_mean_iou(labels, predictions):
+    """
+    labels,prediction with shape of [batch,height,width,class_number=2]
+    """
+    mean_iou = K.variable(0.0)
+    seen_classes = K.variable(0.0)
+
+    for c in range(2):
+        labels_c = K.cast(K.equal(labels, c), K.floatx())
+        pred_c = K.cast(K.equal(predictions, c), K.floatx())
+
+        labels_c_sum = K.sum(labels_c)
+        pred_c_sum = K.sum(pred_c)
+
+        intersect = K.sum(labels_c*pred_c)
+        union = labels_c_sum + pred_c_sum - intersect
+        iou = intersect / union
+        condition = K.equal(union, 0)
+        mean_iou = K.switch(condition,
+                            mean_iou,
+                            mean_iou+iou)
+        seen_classes = K.switch(condition,
+                                seen_classes,
+                                seen_classes+1)
+
+    mean_iou = K.switch(K.equal(seen_classes, 0),
+                        mean_iou,
+                        mean_iou/seen_classes)
+    return mean_iou
 
 def unet(pretrained_weights = None,input_size = (512,512,1)):
     inputs = Input(input_size)
@@ -55,7 +85,7 @@ def unet(pretrained_weights = None,input_size = (512,512,1)):
 
     model = Model(input = inputs, output = conv10)
 
-    model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
+    model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy', switch_mean_iou])
     
     #model.summary()
 

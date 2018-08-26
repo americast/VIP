@@ -38,8 +38,8 @@ def data_in_batches():
         # print resized.shape
         # x.insert(0,resized)
     X = np.asarray(x)
+    print("shape: "+str(X.shape))
     X = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
-    # print("shape: "+str(X.shape))
     # return
     print("   ")
     for file in YFileName:
