@@ -2,7 +2,7 @@
 # @Author: Saurabh Agarwal
 # @Date:   2018-05-24 10:39:32
 # @Last Modified by:   Saurabh Agarwal
-# @Last Modified time: 2018-08-09 18:36:20
+# @Last Modified time: 2018-08-28 18:50:49
 
 
 # import skimage.transform
@@ -38,7 +38,6 @@ def data_in_batches():
         # print resized.shape
         # x.insert(0,resized)
     X = np.asarray(x)
-    print("shape: "+str(X.shape))
     X = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
     # return
     print("   ")

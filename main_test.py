@@ -2,8 +2,8 @@ from model import *
 from data import *
 import numpy as np
 import pudb
-x = np.load("X.npy")
-Y = np.load("y.npy")
+x = np.load("X_test.npy")
+#Y = np.load("y_test.npy")
 
 
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -34,18 +34,18 @@ Y = np.load("y.npy")
 # model.fit(x,Y,batch_size=4,epochs=1,verbose=1, callbacks=[model_checkpoint])
 # model.fit_generator(myGene,steps_per_epoch=1,epochs=1,callbacks=[model_checkpoint])
 
-model = load_model("unet_membrane.hdf5")
+model = load_model("unet_membrane.hdf5",custom_objects={"switch_mean_iou": switch_mean_iou})
 print "Hello4"
 
 # testGene = testGenerator("data/train/test")
 # print "Hello5"
 #results = model.predict_generator(testGene,30,verbose=1)
-score = model.evaluate(x, Y, batch_size=4)
-print(model.metrics_names)
-print("score: "+str(score))
-# result = model.predict(x,batch_size=1,verbose=1)
-# np.save('result.npy',result)
-# print "Hello6"
-# saveResult("data/train/test",result)
-# print "Hello7"
+# score = model.evaluate(x, Y, batch_size=4)
+# print(model.metrics_names)
+# print("score: "+str(score))
+result = model.predict(x,batch_size=1,verbose=1)
+np.save('result.npy',result)
+print "Hello6"
+saveResult("data_test/train/test",result)
+print "Hello7"
 # pu.db

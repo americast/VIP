@@ -9,6 +9,51 @@ from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 from keras import backend as K
+from scipy.spatial.distance import directed_hausdorff
+
+# def d_h_av(y_true, y_pred):
+# 	for each in y_true:
+# 		dist = fabs(y_true[0] - y_pred[0])
+# 		for every in y_pred:
+# 			dist_here = fabs(each - every)
+# 			if (dist_here < dist):
+# 				dist = dist_here
+
+
+
+	# u = np.asarray(y_true, dtype=np.float64, order='c')
+	# return (directed_hausdorff(y_true, y_pred)[0] + directed_hausdorff(y_pred, y_true)[0]) / 2
+
+
+# def dice_coef(y_true, y_pred, smooth=0.0):
+#     '''Average dice coefficient per batch.'''
+#     axes = (1,2,3)
+#     intersection = K.sum(y_true * y_pred, axis=axes)
+#     summation = K.sum(y_true, axis=axes) + K.sum(y_pred, axis=axes)
+    
+#     return K.mean((2.0 * intersection + smooth) / (summation + smooth), axis=0)
+
+# def ninety_five_h(y_true, y_pred):
+# 	to_sum = []
+# 	sum_ = 0
+# 	for each in y_true:
+# 		to_sum.append(directed_hausdorff(each, y_pred)[0])
+
+# 	to_sum.sort()
+# 	to_sum = to_sum[:int(len(to_sum)*0.75)]
+# 	sum_ = 0.5 * sum(to_sum)
+
+# 	to_sum = []
+# 	sum_ = 0
+# 	for each in y_pred:
+# 		to_sum.append(directed_hausdorff(each, y_true)[0])
+
+# 	to_sum.sort()
+# 	to_sum = to_sum[:int(len(to_sum)*0.75)]
+# 	sum_ += 0.5*sum(to_sum)
+
+# 	return sum_
+
 
 def switch_mean_iou(labels, predictions):
     """
@@ -85,7 +130,7 @@ def unet(pretrained_weights = None,input_size = (512,512,1)):
 
     model = Model(input = inputs, output = conv10)
 
-    model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy', switch_mean_iou])
+    model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = [switch_mean_iou])
     
     #model.summary()
 

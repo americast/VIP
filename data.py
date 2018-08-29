@@ -2,7 +2,7 @@
 # @Author: Saurabh Agarwal
 # @Date:   2018-05-24 10:39:32
 # @Last Modified by:   Saurabh Agarwal
-# @Last Modified time: 2018-08-09 18:36:20
+# @Last Modified time: 2018-08-28 00:47:48
 
 
 # import skimage.transform
@@ -29,7 +29,7 @@ def data_in_batches():
     XFileName.sort()
     YFileName.sort()
 
-    for file in XFileName[:5]:
+    for file in XFileName:
     	print(file)
         img = io.imread(file)
         resized = img
@@ -42,7 +42,7 @@ def data_in_batches():
     # print("shape: "+str(X.shape))
     # return
     print("   ")
-    for file in YFileName[:5]:
+    for file in YFileName:
     	print(file)
         img = io.imread(file)
         resized = img

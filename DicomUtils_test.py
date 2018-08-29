@@ -12,8 +12,8 @@ import os, sys, glob
 import skimage.io
 
 # Some constants 
-INPUT_FOLDER = 'data/1/'
-OUTPUT_FOLDER = 'data/train/'
+INPUT_FOLDER = 'data_test/1/'
+OUTPUT_FOLDER = 'data_test/train/'
 
 #INPUT_FOLDER = '/usr2/Data/VIP Cup 2018 ICIP/TestData/'
 #OUTPUT_FOLDER = '/usr2/Data/VIP Cup 2018 ICIP/Test/'
@@ -199,7 +199,7 @@ def get_mask(contours, slices):
                     try:
                         z_index = z.index(nodes[0, 2])
                     except ValueError:
-                        print "Boundary case, skipping...."
+                        print ("Boundary case, skipping....")
                         continue
                         #z_index = zNew.index(nodes[0, 2])
                     #z_index = z.index(nodes[0, 2])
@@ -229,7 +229,7 @@ patients.sort()
 
 def test_single_patient():
     patient = patients[89] # Just get the first patient for demo 
-    print patient
+    print (patient)
     for subdir, dirs, files in os.walk(patient):
         #print subdir
         #print dirs
@@ -243,12 +243,12 @@ def test_single_patient():
             slices = [dicom.read_file(dcm) for dcm in dcms]
     
     pat_id = slices[0].PatientID        
-    print "Patient ID : ",pat_id
+    print ("Patient ID : ",pat_id)
 
     slices.sort(key = lambda x: float(x.ImagePositionPatient[2]))
     image = np.stack([s.pixel_array for s in slices], axis=-1)
 
-    print image.dtype
+    print (image.dtype)
     image = image.astype(np.int16)
     image = image* slices[0].RescaleSlope + slices[0].RescaleIntercept
 
@@ -267,7 +267,7 @@ def test_single_patient():
     label = np.swapaxes(label,1,2)
     skimage.io.imsave(INPUT_FOLDER+pat_id+'_GT.tiff', label.astype(np.uint8), plugin='tifffile', compress = 1)
 
-    print "Img shape and # contours :: ",image.shape, len(contours)
+    print ("Img shape and # contours :: ",image.shape, len(contours))
     # Plot to check slices, for example 50 to 59
     plt.figure(figsize=(15, 15))
     for i in range(9):
@@ -278,14 +278,14 @@ def test_single_patient():
     plt.show()
 
     labels_img2 = np.zeros((image.shape[0], image.shape[1], image.shape[2], 3)) 
-    print image.min(), image.max()
+    print (image.min(), image.max())
     img = 255*normalize_array(image.astype(np.float32), -500,300)
-    print img.min(), img.max()
+    print (img.min(), img.max())
     skimage.io.imsave(INPUT_FOLDER+pat_id+'_uc.tiff', img.astype(np.uint8), plugin='tifffile', compress = 1)
     labels_img2[ ... , 0 ] = img; labels_img2[ ... , 1 ] = img; labels_img2[ ... , 2 ] = img
     tmp = np.where( label > 0, 1, 0)
     opacity = 0.5
-    print tmp.shape
+    print (tmp.shape)
     
     labels_img2[ tmp==1  , 2 ] = opacity * img[tmp==1]
     labels_img2[ tmp==1  , 1 ] = opacity * img[tmp==1]
@@ -296,26 +296,19 @@ def test_single_patient():
 #test_single_patient()
 #sys.exit(0)
 
-for patient in patients[:2]:
+for patient in patients:
     contours = {}
-    print("Patient")
     for subdir, dirs, files in os.walk(patient):
-        print("Path: ",subdir)
-        #print subdir
-        #print dirs
-        #print files
+        # print("Folders: ",subdir,dirs)
         dcms = glob.glob(os.path.join(subdir, "*.dcm"))
-        #print dcms
         if len(dcms) == 1:
-            print("File: ",os.path.join(subdir, files[0]))
             structure = dicom.read_file(os.path.join(subdir, files[0]))
             contours = read_structure(structure)
         elif len(dcms) > 1:
-            slices = [dicom.read_file(dcm) for dcm in dcms]
-    
-    return
+            slices = [dicom.read_file(dcm,force=True) for dcm in dcms]
+
     pat_id = slices[0].PatientID        
-    print "Patient ID : ",pat_id,
+    print ("Patient ID : ",pat_id)
 
     slices.sort(key = lambda x: float(x.ImagePositionPatient[2]))
     image = np.stack([s.pixel_array for s in slices], axis=-1)
@@ -323,7 +316,6 @@ for patient in patients[:2]:
     if(len(contours) !=0 ):
         label, colors = get_mask(contours, slices)
     
-    print image.dtype
     image = image.astype(np.int16)
     image = image* slices[0].RescaleSlope + slices[0].RescaleIntercept
     #image = get_pixels_hu(slices)

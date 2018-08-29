@@ -318,7 +318,7 @@ for patient in patients[:100]:
         elif len(dcms) > 1:
             slices = [dicom.read_file(dcm) for dcm in dcms]
     
-    pat_id = slices[0].PatientID        
+    pat_id = slices[0].PatientID     
     print "Patient ID : ",pat_id,
 
     slices.sort(key = lambda x: float(x.ImagePositionPatient[2]))

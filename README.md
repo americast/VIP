@@ -3,11 +3,14 @@
 ##Requirements
 pydicom
 Pillow 5.2.0
+pycrf
 
 Generate tiff files with:
 `pyhton DicomUtils.py`
 
-Generate data with:  
-`python data.py`
+Run the code with  
+`python main.py`.
 
-Data will be saved as numpy binaries (`X.npy` and `y.npy`) in the root folder.
+
+The data needs to be placed at `/data` folder. For valodation, place at `/data/val` folder and run code by apending `_val` between the program names and `.py`, such as `python main_val.py`.  
+for test, append with `_test`.

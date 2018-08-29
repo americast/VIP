@@ -2,7 +2,7 @@
 # @Author: Saurabh Agarwal
 # @Date:   2018-05-24 10:39:32
 # @Last Modified by:   Saurabh Agarwal
-# @Last Modified time: 2018-08-09 18:36:20
+# @Last Modified time: 2018-08-28 18:51:41
 
 
 # import skimage.transform
@@ -10,7 +10,7 @@ from __future__ import print_function
 import os
 import glob
 import numpy as np
-from keras.preprocessing.image import ImageDataGenerator
+# from keras.preprocessing.image import ImageDataGenerator
 import skimage.io as io
 import skimage.transform as trans
 
@@ -18,19 +18,19 @@ BATCH_SIZE = 10
 
 def data_in_batches():
     XPath = os.path.join(".","data_test/train/train")
-    YPath = os.path.join(".","data_test/train/GT")
+    # YPath = os.path.join(".","data_test/train/GT")
 
     XFileName = glob.glob(os.path.join(XPath,"*.tiff"))
-    YFileName = glob.glob(os.path.join(YPath,"*.tiff"))
+    # YFileName = glob.glob(os.path.join(YPath,"*.tiff"))
 
     x = []
-    y = []
+    # y = []
 
     XFileName.sort()
-    YFileName.sort()
+    # YFileName.sort()
 
     for file in XFileName:
-    	print(file)
+        print(file)
         img = io.imread(file)
         resized = img
         for slice in resized:
@@ -38,25 +38,26 @@ def data_in_batches():
         # print resized.shape
         # x.insert(0,resized)
     X = np.asarray(x)
+    print(X.shape)
     X = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
     # print("shape: "+str(X.shape))
     # return
     print("   ")
-    for file in YFileName:
-    	print(file)
-        img = io.imread(file)
-        resized = img
-        for slice in resized:
-            y.insert(0,slice)
-        # print resized.shape
-        # y.insert(0,resized)
-    y = np.asarray(y)
-    y = np.reshape(y,(y.shape[0],y.shape[1],y.shape[2],1))
+    # for file in YFileName:
+    #   print(file)
+    #     img = io.imread(file)
+    #     resized = img
+    #     for slice in resized:
+    #         y.insert(0,slice)
+    #     # print resized.shape
+    #     # y.insert(0,resized)
+    # y = np.asarray(y)
+    # y = np.reshape(y,(y.shape[0],y.shape[1],y.shape[2],1))
 
     print("shape of X: "+str(X.shape))
-    print("shape of y: "+str(y.shape))
-    np.save('X.npy', X)
-    np.save('y.npy', y)
+    # print("shape of y: "+str(y.shape))
+    np.save('X_test.npy', X)
+    # np.save('y.npy', y)
 
 
 
