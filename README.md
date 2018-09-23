@@ -1,4 +1,4 @@
-# VIP Cup
+# Lung Cancer Detection via CT Image Segmentation
 
 ##Requirements
 pydicom
